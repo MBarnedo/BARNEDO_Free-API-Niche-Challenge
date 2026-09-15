@@ -179,7 +179,8 @@ async function lookup(rawWord) {
   showStatus("turning pages…", `Looking up “${word}”.`);
 
   try {
-    const defineRes = await fetch(`/api/define?word=${encodeURIComponent(word)}`);
+    // Fetch directly from Free Dictionary API
+    const defineRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
     if (token !== lookupToken) return;
 
     const defineData = await defineRes.json();
@@ -212,12 +213,22 @@ async function lookup(rawWord) {
     const firstDef = currentMeanings[0]?.definitions?.[0]?.definition || "opened in the scrapbook";
     addClipping(entry.word, firstDef.slice(0, 72) + (firstDef.length > 72 ? "…" : ""));
 
-    const relatedRes = await fetch(`/api/related?word=${encodeURIComponent(word)}`);
-    if (token !== lookupToken) return;
+    // Fetch related words from Datamuse API (Synonyms, Similar words, Rhymes)
+    try {
+      const [synRes, simRes, rhyRes] = await Promise.all([
+        fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}&max=6`),
+        fetch(`https://api.datamuse.com/words?ml=${encodeURIComponent(word)}&max=6`),
+        fetch(`https://api.datamuse.com/words?rel_rhy=${encodeURIComponent(word)}&max=6`),
+      ]);
+      if (token !== lookupToken) return;
 
-    if (relatedRes.ok) {
-      renderRelated(await relatedRes.json());
-    } else {
+      const synonyms = synRes.ok ? (await synRes.json()).map((i) => i.word) : [];
+      const similar = simRes.ok ? (await simRes.json()).map((i) => i.word) : [];
+      const rhymes = rhyRes.ok ? (await rhyRes.json()).map((i) => i.word) : [];
+
+      renderRelated({ synonyms, similar, rhymes });
+    } catch {
+      if (token !== lookupToken) return;
       relatedEl.classList.add("hidden");
     }
   } catch {
@@ -230,7 +241,7 @@ async function loadWordOfTheDay() {
   const word = WORD_STACK[dayIndex() % WORD_STACK.length];
   wotdWord.textContent = word;
   try {
-    const response = await fetch(`/api/define?word=${encodeURIComponent(word)}`);
+    const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
     const data = await response.json();
     const entry = Array.isArray(data) ? data[0] : data;
     const blurb = entry.meanings?.[0]?.definitions?.[0]?.definition;
