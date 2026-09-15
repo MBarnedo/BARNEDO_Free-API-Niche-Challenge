@@ -179,9 +179,9 @@ async function lookup(rawWord) {
   showStatus("turning pages…", `Looking up “${word}”.`);
 
   try {
-    // Fetch directly from Free Dictionary API
+// Fetch directly from Free Dictionary API
 const targetUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`;
-const defineRes = await fetch(`/api/dictionary/${encodeURIComponent(word)}`);
+const defineRes = await fetch(targetUrl);
     const defineData = await defineRes.json();
     if (!defineRes.ok) {
       showStatus(defineData.title || "Not found", defineData.message || "No entry for that word.");
@@ -240,8 +240,9 @@ async function loadWordOfTheDay() {
   const word = WORD_STACK[dayIndex() % WORD_STACK.length];
   wotdWord.textContent = word;
   try {
+// Fetch directly from Free Dictionary API
 const targetUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`;
-const response = await fetch(`/api/dictionary/${encodeURIComponent(word)}`);
+const response = await fetch(targetUrl);
     const data = await response.json();
     const entry = Array.isArray(data) ? data[0] : data;
     const blurb = entry.meanings?.[0]?.definitions?.[0]?.definition;
@@ -289,4 +290,5 @@ playAudio.addEventListener("click", () => {
 });
 
 renderClippings();
+loadWordOfTheDay();
 loadWordOfTheDay();
