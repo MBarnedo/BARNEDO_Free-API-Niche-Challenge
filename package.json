@@ -1,0 +1,13 @@
+{
+  "name": "lexicon-scrapbook",
+  "version": "1.0.0",
+  "description": "Academia / scrapbook dictionary app for the Free API Niche Challenge.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lexicon Scrapbook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="desk">
+      <header class="masthead">
+        <p class="stamp">Dept. of Words · Form 14</p>
+        <h1>Lexicon Scrapbook</h1>
+        <p class="subtitle">a private lexicon, kept in the margin</p>
+      </header>
+
+      <main class="journal">
+        <section class="page left-page" aria-label="Index">
+          <div class="tape tape-left" aria-hidden="true"></div>
+          <p class="page-label">Index</p>
+
+          <form id="lookup-form" class="catalog-slip" autocomplete="off">
+            <label class="slip-label" for="word-input">Look up</label>
+            <div class="slip-row">
+              <input
+                id="word-input"
+                name="word"
+                type="text"
+                placeholder="write a word…"
+                maxlength="64"
+                required
+              />
+              <button type="submit" class="ink-button">Define</button>
+            </div>
+            <div class="slip-actions">
+              <button type="button" id="random-btn" class="ghost-button">Random leaf</button>
+              <button type="button" id="clear-clippings" class="ghost-button">Clear margin</button>
+            </div>
+          </form>
+
+          <article class="wotd-card" id="wotd-card">
+            <p class="scribble wotd-scribble">word of the day — do not lose this slip</p>
+            <h2>Word of the day</h2>
+            <p class="wotd-word" id="wotd-word">…</p>
+            <p class="wotd-blurb" id="wotd-blurb">Fetching today’s leaf…</p>
+            <button type="button" id="wotd-open" class="ghost-button">Open this entry</button>
+          </article>
+
+          <section class="clippings" aria-label="Recent lookups">
+            <h2 class="section-hand">Margin clippings</h2>
+            <ul id="clippings-list" class="clippings-list"></ul>
+          </section>
+        </section>
+
+        <section class="page right-page" aria-label="Entry">
+          <div class="coffee-ring" aria-hidden="true"></div>
+          <div class="paperclip" aria-hidden="true"></div>
+          <p class="page-label">Entry</p>
+
+          <div id="status" class="blank-leaf" role="status">
+            <p class="scribble">this leaf is still blank</p>
+            <p>Search a word, open the word of the day, or pull a random leaf from the stack.</p>
+          </div>
+
+          <article id="entry" class="entry hidden">
+            <header class="entry-head">
+              <h2 id="entry-word"></h2>
+              <p id="entry-phonetic" class="phonetic"></p>
+              <button type="button" id="play-audio" class="stamp-button hidden">Hear it</button>
+            </header>
+            <p id="entry-origin" class="origin"></p>
+            <div id="pos-filters" class="pos-filters" hidden></div>
+            <div id="meanings"></div>
+            <aside id="related" class="sticky-pad hidden">
+              <p class="scribble">see also / rhymes / cousins</p>
+              <div id="related-body"></div>
+            </aside>
+          </article>
+        </section>
+      </main>
+
+      <footer class="colophon">
+        Definitions via <a href="https://dictionaryapi.dev/" target="_blank" rel="noreferrer">Free Dictionary API</a>
+        · related notes via <a href="https://www.datamuse.com/api/" target="_blank" rel="noreferrer">Datamuse</a>
+        · no API keys required
+      </footer>
+    </div>
+
+    <audio id="pronounce" preload="none"></audio>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

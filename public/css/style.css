@@ -1,0 +1,459 @@
+:root {
+  --ink: #1c1712;
+  --faded: #5c5348;
+  --red-margin: #c45c5c;
+  --line: #b7c7d8;
+  --paper: #f4ecd8;
+  --paper-deep: #e8dcc4;
+  --tape: #d7b07a;
+  --forest: #3d5a45;
+  --stamp: #8b2e2e;
+  --line-height: 32px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--ink);
+  font-family: "EB Garamond", Georgia, serif;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.35), transparent 28%),
+    radial-gradient(circle at 80% 70%, rgba(80, 50, 20, 0.18), transparent 32%),
+    #6b5344;
+}
+
+a {
+  color: var(--stamp);
+}
+
+.desk {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+}
+
+.masthead {
+  text-align: center;
+  margin-bottom: 22px;
+  color: #f6ead4;
+}
+
+.masthead h1 {
+  font-family: "Special Elite", cursive;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 400;
+  margin: 6px 0 0;
+  letter-spacing: 0.04em;
+}
+
+.subtitle,
+.stamp,
+.scribble,
+.page-label,
+.section-hand,
+.slip-label {
+  font-family: "Caveat", cursive;
+}
+
+.stamp {
+  display: inline-block;
+  margin: 0;
+  padding: 4px 10px;
+  border: 2px solid #e8c9a0;
+  color: #e8c9a0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: "Special Elite", cursive;
+  font-size: 0.72rem;
+  transform: rotate(-2deg);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 1.45rem;
+  opacity: 0.9;
+}
+
+.journal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  filter: drop-shadow(0 18px 28px rgba(40, 22, 10, 0.38));
+}
+
+.page {
+  position: relative;
+  min-height: 760px;
+  padding: 28px 28px 36px 78px;
+  background-color: var(--paper);
+  background-image:
+    url("/assets/lined-paper.jpg"),
+    linear-gradient(90deg, transparent 56px, var(--red-margin) 56px, var(--red-margin) 58px, transparent 58px),
+    repeating-linear-gradient(
+      transparent 0,
+      transparent calc(var(--line-height) - 1px),
+      var(--line) var(--line-height)
+    );
+  background-size: cover, auto, 100% var(--line-height);
+  background-blend-mode: multiply, normal, normal;
+  box-shadow: inset 0 0 80px rgba(120, 90, 50, 0.12);
+  overflow: hidden;
+}
+
+.left-page {
+  border-radius: 6px 0 0 6px;
+}
+
+.right-page {
+  border-radius: 0 6px 6px 0;
+}
+
+.page-label {
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--faded);
+  transform: rotate(8deg);
+}
+
+.tape {
+  position: absolute;
+  top: -8px;
+  left: 38%;
+  width: 92px;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(215, 176, 122, 0.55), rgba(196, 154, 96, 0.4));
+  transform: rotate(-3deg);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+}
+
+.coffee-ring {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  right: 36px;
+  bottom: 70px;
+  border: 10px solid rgba(140, 92, 48, 0.16);
+  border-radius: 50%;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.paperclip {
+  position: absolute;
+  top: 18px;
+  left: 22px;
+  width: 14px;
+  height: 36px;
+  border: 3px solid #9aa3ad;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  transform: rotate(-18deg);
+}
+
+.catalog-slip {
+  background: rgba(255, 252, 245, 0.72);
+  border: 1px dashed #b9a58a;
+  padding: 16px 16px 12px;
+  transform: rotate(-0.6deg);
+  margin-top: 18px;
+}
+
+.slip-label {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.slip-row {
+  display: flex;
+  gap: 8px;
+}
+
+#word-input {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  font-family: "Caveat", cursive;
+  font-size: 1.7rem;
+  padding: 4px 2px;
+  color: var(--ink);
+}
+
+#word-input:focus {
+  outline: none;
+  border-bottom-color: var(--stamp);
+}
+
+.ink-button,
+.ghost-button,
+.stamp-button {
+  cursor: pointer;
+  font-family: "Special Elite", cursive;
+}
+
+.ink-button {
+  background: var(--ink);
+  color: #f6ead4;
+  border: none;
+  padding: 8px 14px;
+}
+
+.ghost-button {
+  background: transparent;
+  border: none;
+  color: var(--forest);
+  font-family: "Caveat", cursive;
+  font-size: 1.25rem;
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  padding: 4px 0;
+}
+
+.slip-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.wotd-card {
+  margin-top: 28px;
+  padding: 8px 6px 16px;
+}
+
+.wotd-scribble {
+  margin: 0;
+  color: var(--stamp);
+  transform: rotate(-2deg);
+  font-size: 1.25rem;
+}
+
+.wotd-card h2,
+.section-hand {
+  font-family: "Special Elite", cursive;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 4px 0 8px;
+}
+
+.wotd-word {
+  font-size: 2.4rem;
+  margin: 0;
+  font-style: italic;
+}
+
+.wotd-blurb {
+  margin: 4px 0 10px;
+  color: var(--faded);
+}
+
+.clippings-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.clippings-list li {
+  background: #f8f1dc;
+  border: 1px solid #d8c7a4;
+  padding: 8px 10px;
+  max-width: 160px;
+  transform: rotate(-1.5deg);
+  box-shadow: 2px 3px 0 rgba(80, 60, 30, 0.08);
+  cursor: pointer;
+}
+
+.clippings-list li:nth-child(even) {
+  transform: rotate(1.8deg);
+}
+
+.clippings-list strong {
+  display: block;
+  font-family: "Special Elite", cursive;
+  font-size: 0.85rem;
+}
+
+.clippings-list span {
+  font-size: 0.92rem;
+  color: var(--faded);
+}
+
+.blank-leaf,
+.entry {
+  margin-top: 26px;
+}
+
+.blank-leaf p:last-child {
+  max-width: 36ch;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.entry-head h2 {
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  margin: 0;
+  font-style: italic;
+}
+
+.phonetic {
+  margin: 0;
+  color: var(--faded);
+  font-family: "Caveat", cursive;
+  font-size: 1.6rem;
+}
+
+.stamp-button {
+  border: 2px solid var(--stamp);
+  color: var(--stamp);
+  background: transparent;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  transform: rotate(3deg);
+}
+
+.origin {
+  font-style: italic;
+  color: var(--faded);
+  max-width: 52ch;
+}
+
+.pos-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 18px;
+}
+
+.pos-filters button {
+  font-family: "Special Elite", cursive;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px dashed var(--stamp);
+  background: transparent;
+  color: var(--stamp);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.pos-filters button.active {
+  background: rgba(139, 46, 46, 0.12);
+}
+
+.meaning-block {
+  margin-bottom: 22px;
+}
+
+.meaning-block h3 {
+  font-family: "Special Elite", cursive;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stamp);
+  margin: 0 0 8px;
+}
+
+.meaning-block ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.meaning-block li {
+  margin-bottom: 10px;
+}
+
+.example {
+  display: block;
+  font-style: italic;
+  color: var(--forest);
+  font-family: "Caveat", cursive;
+  font-size: 1.35rem;
+}
+
+.sticky-pad {
+  margin-top: 24px;
+  background: #f3e27a;
+  padding: 12px 14px 16px;
+  transform: rotate(1.4deg);
+  box-shadow: 3px 4px 0 rgba(90, 70, 20, 0.12);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dotted var(--ink);
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.chip-label {
+  font-family: "Special Elite", cursive;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 8px 0 4px;
+}
+
+.colophon {
+  text-align: center;
+  color: #f0e2c8;
+  margin-top: 18px;
+  font-size: 0.95rem;
+}
+
+.colophon a {
+  color: #ffd9a8;
+}
+
+@media (max-width: 860px) {
+  .journal {
+    grid-template-columns: 1fr;
+  }
+
+  .left-page,
+  .right-page {
+    border-radius: 6px;
+    min-height: auto;
+  }
+
+  .page {
+    padding-left: 68px;
+  }
+}
