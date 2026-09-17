@@ -30,8 +30,6 @@ const entryPhonetic = document.querySelector("#entry-phonetic");
 const entryOrigin = document.querySelector("#entry-origin");
 const meaningsEl = document.querySelector("#meanings");
 const posFilters = document.querySelector("#pos-filters");
-const relatedEl = document.querySelector("#related");
-const relatedBody = document.querySelector("#related-body");
 const playAudio = document.querySelector("#play-audio");
 const audioEl = document.querySelector("#pronounce");
 const clippingsList = document.querySelector("#clippings-list");
@@ -84,10 +82,6 @@ function addClipping(word, snippet) {
   renderClippings();
 }
 
-function uniqueWords(words) {
-  return [...new Set((words || []).map((word) => word.toLowerCase()))];
-}
-
 function showStatus(title, message) {
   entryEl.classList.add("hidden");
   statusEl.classList.remove("hidden");
@@ -136,51 +130,17 @@ function renderFilters() {
     .join("");
 }
 
-function renderRelated(data) {
-  const seen = new Set();
-  const groups = [
-    ["synonyms", uniqueWords(data.synonyms)],
-    ["similar", uniqueWords(data.similar)],
-    ["rhymes", uniqueWords(data.rhymes)],
-  ]
-    .map(([label, words]) => [
-      label,
-      words.filter((word) => {
-        if (seen.has(word)) return false;
-        seen.add(word);
-        return true;
-      }),
-    ])
-    .filter(([, words]) => words.length);
-
-  if (!groups.length) {
-    relatedEl.classList.add("hidden");
-    return;
-  }
-
-  relatedBody.innerHTML = groups
-    .map(([label, words]) => {
-      const chips = words
-        .map((word) => `<button type="button" class="chip" data-word="${word}">${word}</button>`)
-        .join("");
-      return `<p class="chip-label">${label}</p><div class="chip-row">${chips}</div>`;
-    })
-    .join("");
-  relatedEl.classList.remove("hidden");
-}
-
 async function lookup(rawWord) {
   const word = String(rawWord || "").trim();
   if (!word) return;
 
   const token = ++lookupToken;
   input.value = word;
-  relatedEl.classList.add("hidden");
   showStatus("turning pages…", `Looking up “${word}”.`);
 
   try {
 // Fetch directly from Free Dictionary API
-const targetUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`;
+const targetUrl = `/api/define?word=${encodeURIComponent(word)}`;
 const defineRes = await fetch(targetUrl);
     const defineData = await defineRes.json();
     if (!defineRes.ok) {
@@ -212,24 +172,6 @@ const defineRes = await fetch(targetUrl);
     const firstDef = currentMeanings[0]?.definitions?.[0]?.definition || "opened in the scrapbook";
     addClipping(entry.word, firstDef.slice(0, 72) + (firstDef.length > 72 ? "…" : ""));
 
-    // Fetch related words from Datamuse API (Synonyms, Similar words, Rhymes)
-    try {
-      const [synRes, simRes, rhyRes] = await Promise.all([
-        fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}&max=6`),
-        fetch(`https://api.datamuse.com/words?ml=${encodeURIComponent(word)}&max=6`),
-        fetch(`https://api.datamuse.com/words?rel_rhy=${encodeURIComponent(word)}&max=6`),
-      ]);
-      if (token !== lookupToken) return;
-
-      const synonyms = synRes.ok ? (await synRes.json()).map((i) => i.word) : [];
-      const similar = simRes.ok ? (await simRes.json()).map((i) => i.word) : [];
-      const rhymes = rhyRes.ok ? (await rhyRes.json()).map((i) => i.word) : [];
-
-      renderRelated({ synonyms, similar, rhymes });
-    } catch {
-      if (token !== lookupToken) return;
-      relatedEl.classList.add("hidden");
-    }
   } catch {
     if (token !== lookupToken) return;
     showStatus("the courier is late", "Could not reach the lexicon just now.");
@@ -241,7 +183,7 @@ async function loadWordOfTheDay() {
   wotdWord.textContent = word;
   try {
 // Fetch directly from Free Dictionary API
-const targetUrl = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`;
+const targetUrl = `/api/define?word=${encodeURIComponent(word)}`;
 const response = await fetch(targetUrl);
     const data = await response.json();
     const entry = Array.isArray(data) ? data[0] : data;
@@ -279,11 +221,6 @@ posFilters.addEventListener("click", (event) => {
   renderMeanings();
 });
 
-relatedBody.addEventListener("click", (event) => {
-  const chip = event.target.closest("[data-word]");
-  if (!chip) return;
-  lookup(chip.dataset.word);
-});
 
 playAudio.addEventListener("click", () => {
   audioEl.play().catch(() => {});

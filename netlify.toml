@@ -1,5 +1,11 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
 [[redirects]]
-  from = "/api/dictionary/*"
-  to = "https://api.dictionaryapi.dev/api/v2/entries/en/:splat"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
   status = 200
-  force = true
